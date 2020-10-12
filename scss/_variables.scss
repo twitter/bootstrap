@@ -991,6 +991,11 @@ $pagination-disabled-border-color:  $gray-300 !default;
 
 $pagination-transition:              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
 
+// Placeholders
+
+$placeholder-opacity-max:           .5 !default;
+$placeholder-opacity-min:           .2 !default;
+
 // Cards
 
 $card-spacer-y:                     $spacer !default;
