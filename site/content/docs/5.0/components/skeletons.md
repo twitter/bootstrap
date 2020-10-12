@@ -8,7 +8,7 @@ toc: true
 
 ## About
 
-Bootstrap “skeletons” can be used to enhance the experience of your application. They’re built only with HTML and CSS, meaning you don’t need any JavaScript to create them. You will, however, need some custom JavaScript to toggle their visibility. Their appearance, color, and sizing can be easily customized with our amazing utility classes.
+Bootstrap "skeletons" can be used to enhance the experience of your application. They're built only with HTML and CSS, meaning you don't need any JavaScript to create them. You will, however, need some custom JavaScript to toggle their visibility. Their appearance, color, and sizing can be easily customized with our amazing utility classes.
 
 ## Example
 
@@ -19,15 +19,9 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
   <div class="card" style="width: 18rem;">
     {{< placeholder width="100%" height="180" class="card-img-top" text="false" background="#20c997" >}}
     <div class="card-body">
-      <h5 class="card-title">
-        Card title
-      </h5>
-      <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk of the card's content.
-      </p>
-      <a href="#" class="btn btn-primary">
-        Go somewhere
-      </a>
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
   </div>
 
@@ -39,23 +33,22 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
       </h5>
       <p class="card-text">
         <span class="skeleton-line skeleton-glow skeleton-sm">
-          <span class="skeleton-dash bg-secondary" style="width:60%"></span>
-          <span class="skeleton-dash bg-secondary" style="width:35%"></span>
+          <span class="skeleton-dash bg-secondary" style="width: 60%;"></span>
+          <span class="skeleton-dash bg-secondary" style="width: 35%;"></span>
         </span>
         <span class="skeleton-line skeleton-glow skeleton-sm">
-          <span class="skeleton-dash bg-secondary" style="width:35%"></span>
-          <span class="skeleton-dash bg-secondary" style="width:50%"></span>
+          <span class="skeleton-dash bg-secondary" style="width: 35%;"></span>
+          <span class="skeleton-dash bg-secondary" style="width: 50%;"></span>
         </span>
         <span class="skeleton-line skeleton-glow skeleton-sm">
-          <span class="skeleton-dash bg-secondary" style="width:70%"></span>
+          <span class="skeleton-dash bg-secondary" style="width: 70%;"></span>
         </span>
       </p>
-      <a href="#" class="btn btn-primary disabled" style="width:55%">
+      <a href="#" class="btn btn-primary disabled" style="width: 55%;">
         <span class="skeleton-line w-100"></span>
       </a>
     </div>
   </div>
-
 </div>
 {{< /example >}}
 
@@ -88,8 +81,8 @@ By default all `.skeleton-dash`es together will take the full with of the `.skel
   <span class="skeleton-dash w-75"></span>
 </span>
 <span class="skeleton-line">
-  <span class="skeleton-dash" style="width:60%"></span>
-  <span class="skeleton-dash" style="width:25%"></span>
+  <span class="skeleton-dash" style="width: 60%;"></span>
+  <span class="skeleton-dash" style="width: 25%;"></span>
 </span>
 {{< /example >}}
 
@@ -116,7 +109,8 @@ By default the `skeleton-dash` use the `currentColor`. Again, you can override i
 {{< /example >}}
 
 ### Sizing
-The size of the `.skeleton-dash`es are calculated according to the typography style of the parent element. To customize them  you can use classes like `.skeleton-lg`,  `.skeleton-sm` or `.skeleton-xs`.
+
+The size of the `.skeleton-dash`es are calculated according to the typography style of the parent element. To customize them you can use classes like `.skeleton-lg`, `.skeleton-sm` or `.skeleton-xs`.
 
 {{< callout info >}}
 Even if you use size modifiers, the space between lines is not affected, only the thickness of the dash. This is in purpose to help you customize the weights of the different elements of the skeleton composition.
@@ -124,7 +118,7 @@ Even if you use size modifiers, the space between lines is not affected, only th
 
 {{< example >}}
 <div class="d-flex justify-content-around">
-  <div style="width:45%">
+  <div style="width: 45%;">
     <h3>
       <span class="skeleton-line"><span class="skeleton-dash"></span>&#8232;</span>
     </h3>
@@ -135,13 +129,9 @@ Even if you use size modifiers, the space between lines is not affected, only th
       <span class="skeleton-line skeleton-xs"><span class="skeleton-dash"></span></span>
     </p>
   </div>
-  <div style="width:45%">
-    <h3>
-      Example main title
-    </h3>
-    <p>
-      The body text with different skeleton sizes applied. As you can see the height of the line inside the paragraph is not affected by the skeleton size.
-    </p>
+  <div style="width: 45%;">
+    <h3>Example main title</h3>
+    <p>The body text with different skeleton sizes applied. As you can see the height of the line inside the paragraph is not affected by the skeleton size.</p>
   </div>
 </div>
 {{< /example >}}
@@ -151,7 +141,7 @@ Even if you use size modifiers, the space between lines is not affected, only th
 You can use the class `.skeleton-glow` to animate the lines and improve the loading perception.
 
 {{< example >}}
-  <span class="skeleton-line skeleton-glow">
-    <span class="skeleton-dash"></span>
-  </span>
+<span class="skeleton-line skeleton-glow">
+  <span class="skeleton-dash"></span>
+</span>
 {{< /example >}}
