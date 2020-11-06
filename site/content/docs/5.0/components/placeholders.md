@@ -43,7 +43,6 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
       </a>
     </div>
   </div>
-
 </div>
 {{< /example >}}
 
@@ -121,5 +120,4 @@ You can use the class `.placeholder-glow` or `.placeholder-wave` to animate the 
   <span class="placeholder col-3"></span>
   <span class="placeholder col-3"></span>
 </p>
-
 {{< /example >}}
