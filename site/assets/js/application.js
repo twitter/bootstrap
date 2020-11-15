@@ -12,7 +12,7 @@
 
 /* global ClipboardJS: false, anchors: false, bootstrap: false */
 
-(function () {
+(() => {
   'use strict'
 
   // Tooltip and popover demos
@@ -28,7 +28,7 @@
       new bootstrap.Popover(popover)
     })
 
-  var toastPlacement = document.getElementById('toastPlacement')
+  const toastPlacement = document.getElementById('toastPlacement')
   if (toastPlacement) {
     document.getElementById('selectToastPlacement').addEventListener('change', () => {
       if (!toastPlacement.dataset.originalClass) {
@@ -40,19 +40,19 @@
   }
 
   document.querySelectorAll('.bd-example .toast')
-    .forEach(function (toastNode) {
-      var toast = new bootstrap.Toast(toastNode, {
+    .forEach(toastNode => {
+      const toast = new bootstrap.Toast(toastNode, {
         autohide: false
       })
 
       toast.show()
     })
 
-  var toastTrigger = document.getElementById('liveToastBtn')
-  var toastLiveExample = document.getElementById('liveToast')
+  const toastTrigger = document.getElementById('liveToastBtn')
+  const toastLiveExample = document.getElementById('liveToast')
   if (toastTrigger) {
     toastTrigger.addEventListener('click', () => {
-      var toast = new bootstrap.Toast(toastLiveExample)
+      const toast = new bootstrap.Toast(toastLiveExample)
 
       toast.show()
     })
@@ -96,7 +96,7 @@
       const modalTitle = exampleModal.querySelector('.modal-title')
       const modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-      modalTitle.textContent = 'New message to ' + recipient
+      modalTitle.textContent = `New message to ${recipient}`
       modalBodyInput.value = recipient
     })
   }
