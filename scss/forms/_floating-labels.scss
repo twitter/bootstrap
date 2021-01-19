@@ -2,6 +2,7 @@
   position: relative;
 
   > .form-control,
+  > .form-control-plaintext,
   > .form-select {
     height: $form-floating-height;
     padding: $form-floating-padding-y $form-floating-padding-x;
@@ -20,7 +21,8 @@
   }
 
   // stylelint-disable no-duplicate-selectors
-  > .form-control {
+  > .form-control,
+  > .form-control-plaintext {
     &::placeholder {
       color: transparent;
     }
@@ -44,6 +46,8 @@
 
   > .form-control:focus,
   > .form-control:not(:placeholder-shown),
+  > .form-control-plaintext:focus,
+  > .form-control-plaintext:not(:placeholder-shown),
   > .form-select {
     ~ label {
       opacity: $form-floating-label-opacity;
@@ -51,7 +55,8 @@
     }
   }
   // Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
-  > .form-control:-webkit-autofill {
+  > .form-control:-webkit-autofill,
+  > .form-control-plaintext:-webkit-autofill {
     ~ label {
       opacity: $form-floating-label-opacity;
       transform: $form-floating-label-transform;
