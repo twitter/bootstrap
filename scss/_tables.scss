@@ -103,6 +103,20 @@
   }
 }
 
+// Vertical Zebra-striping
+//
+// Vertical zebra-stripe styles (alternating gray and transparent backgrounds for columns)
+.table-striped-vertical {
+  > thead,
+  > tbody {
+    > tr > td:nth-child(#{$table-striped-vertical-order}),
+    > tr > th:nth-child(#{$table-striped-vertical-order}) {
+      --#{$variable-prefix}table-accent-bg: var(--#{$variable-prefix}table-striped-bg);
+      color: var(--#{$variable-prefix}table-striped-color);
+    }
+  }
+}
+
 // Active table
 //
 // The `.table-active` class can be added to highlight rows or cells
