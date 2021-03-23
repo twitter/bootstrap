@@ -1,6 +1,6 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): carousel.js
+ * Bootstrap (v5.0.0-beta3): carousel.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -284,11 +284,9 @@ class Carousel extends BaseComponent {
 
     const move = event => {
       // ensure swiping with one touch and not pinching
-      if (event.touches && event.touches.length > 1) {
-        this.touchDeltaX = 0
-      } else {
-        this.touchDeltaX = event.touches[0].clientX - this.touchStartX
-      }
+      this.touchDeltaX = event.touches && event.touches.length > 1 ?
+        0 :
+        event.touches[0].clientX - this.touchStartX
     }
 
     const end = event => {
