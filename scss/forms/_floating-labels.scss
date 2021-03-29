@@ -46,8 +46,7 @@
 
   > .form-control:focus,
   > .form-control:not(:placeholder-shown),
-  > .form-control-plaintext:focus,
-  > .form-control-plaintext:not(:placeholder-shown),
+  > .form-control-plaintext,
   > .form-select {
     ~ label {
       opacity: $form-floating-label-opacity;
@@ -55,11 +54,16 @@
     }
   }
   // Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
-  > .form-control:-webkit-autofill,
-  > .form-control-plaintext:-webkit-autofill {
+  > .form-control:-webkit-autofill {
     ~ label {
       opacity: $form-floating-label-opacity;
       transform: $form-floating-label-transform;
+    }
+  }
+
+  > .form-control-plaintext {
+    ~ label {
+      border-width: $input-border-width 0; // Required to properly position label text - as explained above
     }
   }
   // stylelint-enable no-duplicate-selectors
