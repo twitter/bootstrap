@@ -20,7 +20,6 @@
     @include transition($form-floating-transition);
   }
 
-  // stylelint-disable no-duplicate-selectors
   > .form-control,
   > .form-control-plaintext {
     &::placeholder {
@@ -66,5 +65,4 @@
       border-width: $input-border-width 0; // Required to properly position label text - as explained above
     }
   }
-  // stylelint-enable no-duplicate-selectors
 }
