@@ -73,6 +73,12 @@ const getElementFromSelector = element => {
   return selector ? document.querySelector(selector) : null
 }
 
+const getAllElementsFromSelector = element => {
+  const selector = getSelector(element)
+
+  return selector ? document.querySelectorAll(selector) : null
+}
+
 const getTransitionDurationFromElement = element => {
   if (!element) {
     return 0
@@ -234,6 +240,7 @@ export {
   getUID,
   getSelectorFromElement,
   getElementFromSelector,
+  getAllElementsFromSelector,
   getTransitionDurationFromElement,
   triggerTransitionEnd,
   isElement,
