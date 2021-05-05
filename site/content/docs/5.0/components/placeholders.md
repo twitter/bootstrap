@@ -121,3 +121,10 @@ You can use the class `.placeholder-glow` or `.placeholder-wave` to animate the 
   <span class="placeholder col-3"></span>
 </p>
 {{< /example >}}
+
+## Sass
+
+### Variables
+
+{{< scss-docs name="placeholders" file="scss/_variables.scss" >}}
+
