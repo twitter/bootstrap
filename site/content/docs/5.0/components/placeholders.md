@@ -25,7 +25,7 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
     </div>
   </div>
 
-  <div class="card" aria-busy="true" style="width: 18rem;">
+  <div class="card" aria-busy="true" aria-hidden="true" style="width: 18rem;">
     {{< placeholder width="100%" height="180" class="card-img-top" text="false" >}}
     <div class="card-body">
       <h5 class="card-title placeholder-glow">
@@ -38,7 +38,7 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
         <span class="placeholder col-6"></span>
         <span class="placeholder col-8"></span>
       </p>
-      <a href="#" class="btn btn-primary disabled placeholder col-6">
+      <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6">
         &nbsp;<!-- needed to give the element some height -->
       </a>
     </div>
