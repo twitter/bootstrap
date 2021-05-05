@@ -93,10 +93,10 @@ By default the `placeholder` use the `currentColor`. Again, you can override it 
 The size of the `.placeholder`s are calculated according to the typography style of the parent element. To customize them you can use classes like `.placeholder-lg`, `.placeholder-sm` or `.placeholder-xs`.
 
 {{< example >}}
-<span class="placeholder col-2 placeholder-lg"></span>
-<span class="placeholder col-2"></span>
-<span class="placeholder col-2 placeholder-sm"></span>
-<span class="placeholder col-2 placeholder-xs"></span>
+<span class="placeholder col-12 placeholder-lg"></span>
+<span class="placeholder col-12"></span>
+<span class="placeholder col-12 placeholder-sm"></span>
+<span class="placeholder col-12 placeholder-xs"></span>
 {{< /example >}}
 
 ### Animation
@@ -105,15 +105,11 @@ You can use the class `.placeholder-glow` or `.placeholder-wave` to animate the 
 
 {{< example >}}
 <p class="placeholder-glow">
-  <span class="placeholder col-3"></span>
-  <span class="placeholder col-3"></span>
-  <span class="placeholder col-3"></span>
+  <span class="placeholder col-12"></span>
 </p>
 
 <p class="placeholder-wave">
-  <span class="placeholder col-3"></span>
-  <span class="placeholder col-3"></span>
-  <span class="placeholder col-3"></span>
+  <span class="placeholder col-12"></span>
 </p>
 {{< /example >}}
 
