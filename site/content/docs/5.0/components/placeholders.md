@@ -80,17 +80,12 @@ You can customize them width with css widths or even using the utility classes.
 By default the `placeholder` use the `currentColor`. Again, you can override it with a custom color or utitlity class.
 
 {{< example >}}
-<span class="placeholder col-1 col-12"></span>
-<span class="placeholder col-1 bg-primary"></span>
-<span class="placeholder col-1 bg-secondary"></span>
-<span class="placeholder col-1 bg-success"></span>
-<span class="placeholder col-1 bg-danger"></span>
-<span class="placeholder col-1 bg-warning"></span>
-<span class="placeholder col-1 bg-info"></span>
-<span class="placeholder col-1 bg-light"></span>
-<span class="placeholder col-1 bg-dark"></span>
-<span class="placeholder col-1 bg-white"></span>
-<span class="placeholder col-1 bg-transparent"></span>
+<span class="placeholder col-12"></span>
+{{< placeholders.inline >}}
+{{- range (index $.Site.Data "theme-colors") }}
+<span class="placeholder col-12 bg-{{ .name }}"></span>
+{{- end -}}
+{{< /placeholders.inline >}}
 {{< /example >}}
 
 ### Sizing
