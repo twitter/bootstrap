@@ -1,5 +1,6 @@
 import FocusTrap from '../../../src/util/focustrap'
 import EventHandler from '../../../src/dom/event-handler'
+import SelectorEngine from '../../../src/dom/selector-engine'
 import { clearFixture, getFixture, createEvent } from '../../helpers/fixture'
 
 describe('FocusTrap', () => {
@@ -40,9 +41,103 @@ describe('FocusTrap', () => {
       expect(trapElement.focus).not.toHaveBeenCalled()
     })
 
-    it('should trap focus', done => {
+    it('should force focus inside focus trap if it can', done => {
       fixtureEl.innerHTML = [
-        '<a href="#">outside</a>',
+        '<a href="#" id="outside">outside</a>',
+        '<div id="focustrap" tabindex="-1">',
+        '<a href="#" id="inside">inside</a>',
+        '</div>'
+      ].join('')
+
+      const trapElement = fixtureEl.querySelector('div')
+      const focustrap = new FocusTrap({ trapElement })
+      focustrap.activate()
+
+      const inside = document.getElementById('inside')
+
+      const focusInListener = () => {
+        expect(inside.focus).toHaveBeenCalled()
+        document.removeEventListener('focusin', focusInListener)
+        done()
+      }
+
+      spyOn(inside, 'focus')
+      spyOn(SelectorEngine, 'focusableChildren').and.callFake(() => [inside])
+
+      document.addEventListener('focusin', focusInListener)
+
+      const focusInEvent = createEvent('focusin', { bubbles: true })
+      Object.defineProperty(focusInEvent, 'target', {
+        value: document.getElementById('outside')
+      })
+
+      document.dispatchEvent(focusInEvent)
+    })
+
+    it('should wrap focus around foward on tab', done => {
+      fixtureEl.innerHTML = [
+        '<a href="#" id="outside">outside</a>',
+        '<div id="focustrap" tabindex="-1">',
+        '<a href="#" id="first">first</a>',
+        '<a href="#" id="inside">inside</a>',
+        '<a href="#" id="last">last</a>',
+        '</div>'
+      ].join('')
+
+      const trapElement = fixtureEl.querySelector('div')
+      const focustrap = new FocusTrap({ trapElement })
+      focustrap.activate()
+
+      const first = document.getElementById('first')
+      const inside = document.getElementById('inside')
+      const last = document.getElementById('last')
+      const outside = document.getElementById('outside')
+
+      spyOn(SelectorEngine, 'focusableChildren').and.callFake(() => [first, inside, last])
+
+      first.addEventListener('focusin', done)
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'Tab'
+
+      document.dispatchEvent(keydown)
+      outside.focus()
+    })
+
+    it('should wrap focus around backwards on shift-tab', done => {
+      fixtureEl.innerHTML = [
+        '<a href="#" id="outside">outside</a>',
+        '<div id="focustrap" tabindex="-1">',
+        '<a href="#" id="first">first</a>',
+        '<a href="#" id="inside">inside</a>',
+        '<a href="#" id="last">last</a>',
+        '</div>'
+      ].join('')
+
+      const trapElement = fixtureEl.querySelector('div')
+      const focustrap = new FocusTrap({ trapElement })
+      focustrap.activate()
+
+      const first = document.getElementById('first')
+      const inside = document.getElementById('inside')
+      const last = document.getElementById('last')
+      const outside = document.getElementById('outside')
+
+      spyOn(SelectorEngine, 'focusableChildren').and.callFake(() => [first, inside, last])
+
+      last.addEventListener('focusin', done)
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'Tab'
+      keydown.shiftKey = true
+
+      document.dispatchEvent(keydown)
+      outside.focus()
+    })
+
+    it('should force focus on itself if there is no focusable content', done => {
+      fixtureEl.innerHTML = [
+        '<a href="#" id="outside">outside</a>',
         '<div id="focustrap" tabindex="-1">',
         '</div>'
       ].join('')
@@ -63,7 +158,7 @@ describe('FocusTrap', () => {
 
       const focusInEvent = createEvent('focusin', { bubbles: true })
       Object.defineProperty(focusInEvent, 'target', {
-        value: fixtureEl.querySelector('a')
+        value: document.getElementById('outside')
       })
 
       document.dispatchEvent(focusInEvent)
