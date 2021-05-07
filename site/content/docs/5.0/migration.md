@@ -19,10 +19,9 @@ toc: true
 - Dropped Internet Explorer 10 and 11
 - Dropped Microsoft Edge < 16 (Legacy Edge)
 - Dropped Firefox < 60
-- Dropped Safari < 10
-- Dropped iOS Safari < 10
+- Dropped Safari < 12
+- Dropped iOS Safari < 12
 - Dropped Chrome < 60
-- Dropped Android < 6
 
 <hr class="my-5">
 
@@ -170,7 +169,7 @@ toc: true
 
 ### Accordion
 
-- Added [new accordion component]({{< docsref "/components/accordion" >}}!
+- Added [new accordion component]({{< docsref "/components/accordion" >}})!
 
 ### Alerts
 
@@ -220,7 +219,7 @@ toc: true
 
 - Replaced chevron icons for carousel controls with new SVGs from [Bootstrap Icons]({{< param "icons" >}}).
 
-### Close buttton
+### Close button
 
 - <span class="badge bg-danger">Breaking</span> Renamed `.close` to `.btn-close` for a less generic name.
 
