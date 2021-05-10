@@ -70,15 +70,38 @@ class ScrollSpy extends BaseComponent {
     this._scrollElement = this._element.tagName === 'BODY' ? window : this._element
     this._config = this._getConfig(config)
     this._selector = `${this._config.target} ${SELECTOR_NAV_LINKS}, ${this._config.target} ${SELECTOR_LIST_ITEMS}, ${this._config.target} .${CLASS_NAME_DROPDOWN_ITEM}`
-    this._offsets = []
-    this._targets = []
+    // These are the "targeted" elements, meaning we will toggle them as active and inactive as we scroll
+    this._targets = SelectorEngine.find(this._selector)
+    // We use the information on these target elements to get the corresponding element itself
+    // These are the DOM elements we will actually watch as we scroll
+    this._observedElements = this._targets.map(element => {
+      const targetSelector = getSelectorFromElement(element)
+      // Not all targets point to another element, but we remove them in the chained filter method
+      if (targetSelector) {
+        return SelectorEngine.findOne(targetSelector)
+      }
+    }).filter(item => item)
+
     this._activeTarget = null
     this._scrollHeight = 0
 
-    EventHandler.on(this._scrollElement, EVENT_SCROLL, () => this._process())
 
-    this.refresh()
-    this._process()
+    this._visibleElements = []
+
+
+    let options = {
+      // null defaults to the viewport
+      root: null, //this._scrollElement === window ? null : this._scrollElement,
+      rootMargin: "0px", // placeholder
+      threshold: 0, // placeholder
+    }
+
+    this._observer = new IntersectionObserver(this._process.bind(this), options);
+
+    // Set up listeners for each of the targeted scrollspy elements
+    for (const observed of this._observedElements) {
+      this._observer.observe(observed)
+    }
   }
 
   // Getters
@@ -93,52 +116,9 @@ class ScrollSpy extends BaseComponent {
 
   // Public
 
-  refresh() {
-    const autoMethod = this._scrollElement === this._scrollElement.window ?
-      METHOD_OFFSET :
-      METHOD_POSITION
-
-    const offsetMethod = this._config.method === 'auto' ?
-      autoMethod :
-      this._config.method
-
-    const offsetBase = offsetMethod === METHOD_POSITION ?
-      this._getScrollTop() :
-      0
-
-    this._offsets = []
-    this._targets = []
-    this._scrollHeight = this._getScrollHeight()
-
-    const targets = SelectorEngine.find(this._selector)
-
-    targets.map(element => {
-      const targetSelector = getSelectorFromElement(element)
-      const target = targetSelector ? SelectorEngine.findOne(targetSelector) : null
-
-      if (target) {
-        const targetBCR = target.getBoundingClientRect()
-        if (targetBCR.width || targetBCR.height) {
-          return [
-            Manipulator[offsetMethod](target).top + offsetBase,
-            targetSelector
-          ]
-        }
-      }
-
-      return null
-    })
-      .filter(item => item)
-      .sort((a, b) => a[0] - b[0])
-      .forEach(item => {
-        this._offsets.push(item[0])
-        this._targets.push(item[1])
-      })
-  }
 
   dispose() {
     super.dispose()
-    EventHandler.off(this._scrollElement, EVENT_KEY)
 
     this._scrollElement = null
     this._config = null
@@ -192,40 +172,47 @@ class ScrollSpy extends BaseComponent {
       this._scrollElement.getBoundingClientRect().height
   }
 
-  _process() {
-    const scrollTop = this._getScrollTop() + this._config.offset
-    const scrollHeight = this._getScrollHeight()
-    const maxScroll = this._config.offset + scrollHeight - this._getOffsetHeight()
-
-    if (this._scrollHeight !== scrollHeight) {
-      this.refresh()
-    }
-
-    if (scrollTop >= maxScroll) {
-      const target = this._targets[this._targets.length - 1]
-
-      if (this._activeTarget !== target) {
-        this._activate(target)
-      }
-
-      return
-    }
-
-    if (this._activeTarget && scrollTop < this._offsets[0] && this._offsets[0] > 0) {
-      this._activeTarget = null
-      this._clear()
-      return
-    }
-
-    for (let i = this._offsets.length; i--;) {
-      const isActiveTarget = this._activeTarget !== this._targets[i] &&
-          scrollTop >= this._offsets[i] &&
-          (typeof this._offsets[i + 1] === 'undefined' || scrollTop < this._offsets[i + 1])
-
-      if (isActiveTarget) {
-        this._activate(this._targets[i])
+  _process(entries, _observer) {
+    for (const entry of entries) {
+      // If this is true, then, the IntersectionObserverEntry describes a transition into a state of intersection
+      if (entry.isIntersecting) {
+        this._visibleElements.push(entry)
+      } else {
+        // if it's false, then you know the transition is from intersecting to not-intersecting.
+        this._visibleElements = this._visibleElements.filter(item => item.target !== entry.target)
       }
     }
+
+    // No elements visible, reset everything
+    if (this._visibleElements.length == 0) {
+      this._clear();
+    }
+
+    // If we're at the bottom, take the bottom-most visible element
+    // if (Math.abs(this._scrollElement.scrollHeight - this._scrollElement.scrollTop) < 5.0) {
+    //   let len = this._visibleElements.length
+    //   this._activate(this._visibleElements[len - 1].target.id)
+    // }
+
+    // Only one element visible, so mark it as the active one
+    if (this._visibleElements.length == 1) {
+      this._activate(this._visibleElements[0].target.id)
+    } else if (this._visibleElements.length == 2) {
+      // Take whichever one has the bigger ratio. This is a crude metric and could be vulnerable to edge cases but good enough for now
+      let first = this._visibleElements[0]
+      let second = this._visibleElements[1]
+
+      if (first.intersectionRect.height > second.intersectionRect.height) {
+        this._activate(first.target.id)
+      } else {
+        this._activate(second.target.id)
+      }
+    } else {
+      // just take the second to last element in the list
+      let len = this._visibleElements.length
+      this._activate(this._visibleElements[len - 2].target.id)
+    }
+
   }
 
   _activate(target) {
@@ -234,7 +221,8 @@ class ScrollSpy extends BaseComponent {
     this._clear()
 
     const queries = this._selector.split(',')
-      .map(selector => `${selector}[data-bs-target="${target}"],${selector}[href="${target}"]`)
+      .map(selector => `${selector}[data-bs-target="#${target}"],${selector}[href="#${target}"]`)
+
 
     const link = SelectorEngine.findOne(queries.join(','))
 
