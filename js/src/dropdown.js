@@ -340,7 +340,7 @@ class Dropdown extends BaseComponent {
           offset: this._getOffset()
         }
       }],
-      strategy: this._config.strategy,
+      strategy: this._config.strategy
     }
 
     // Disable Popper if we have a static display
