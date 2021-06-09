@@ -11,8 +11,6 @@
  * ------------------------------------------------------------------------
  */
 
-import { isDisabled, isVisible } from '../util/index'
-
 const NODE_TEXT = 3
 
 const SelectorEngine = {
@@ -71,24 +69,6 @@ const SelectorEngine = {
     }
 
     return []
-  },
-
-  focusableChildren(element) {
-    const focusables = [
-      'a',
-      'button',
-      'input',
-      'textarea',
-      'area',
-      'select',
-      'details',
-      '[tabindex]',
-      '[contenteditable="true"]'
-    ].map(selector => `${selector}:not([tabindex^="-"])`).join(', ')
-
-    return this.find(focusables, element).filter(el => {
-      return !isDisabled(el) && isVisible(el)
-    })
   }
 }
 
