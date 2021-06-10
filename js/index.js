@@ -1,6 +1,6 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.1): index.esm.js
+ * Bootstrap (v5.0.1): index.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -18,7 +18,7 @@ import Tab from './src/tab'
 import Toast from './src/toast'
 import Tooltip from './src/tooltip'
 
-export default {
+export {
   Alert,
   Button,
   Carousel,
