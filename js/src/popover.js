@@ -18,8 +18,6 @@ import Tooltip from './tooltip'
 const NAME = 'popover'
 const DATA_KEY = 'bs.popover'
 const EVENT_KEY = `.${DATA_KEY}`
-const CLASS_PREFIX = 'bs-popover'
-const BSCLS_PREFIX_REGEX = new RegExp(`(^|\\s)${CLASS_PREFIX}\\S+`, 'g')
 
 const Default = {
   ...Tooltip.Default,
@@ -27,7 +25,7 @@ const Default = {
   offset: [0, 8],
   trigger: 'click',
   content: '',
-  template: '<div class="popover" role="tooltip">' +
+  template: '<div class="popover bs-popover" role="tooltip">' +
               '<div class="popover-arrow"></div>' +
               '<h3 class="popover-header"></h3>' +
               '<div class="popover-body"></div>' +
@@ -124,21 +122,8 @@ class Popover extends Tooltip {
 
   // Private
 
-  _addAttachmentClass(attachment) {
-    this.getTipElement().classList.add(`${CLASS_PREFIX}-${this.updateAttachment(attachment)}`)
-  }
-
   _getContent() {
     return this._element.getAttribute('data-bs-content') || this._config.content
-  }
-
-  _cleanTipClass() {
-    const tip = this.getTipElement()
-    const tabClass = tip.getAttribute('class').match(BSCLS_PREFIX_REGEX)
-    if (tabClass !== null && tabClass.length > 0) {
-      tabClass.map(token => token.trim())
-        .forEach(tClass => tip.classList.remove(tClass))
-    }
   }
 
   // Static

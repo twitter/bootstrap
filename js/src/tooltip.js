@@ -36,8 +36,6 @@ import BaseComponent from './base-component'
 const NAME = 'tooltip'
 const DATA_KEY = 'bs.tooltip'
 const EVENT_KEY = `.${DATA_KEY}`
-const CLASS_PREFIX = 'bs-tooltip'
-const BSCLS_PREFIX_REGEX = new RegExp(`(^|\\s)${CLASS_PREFIX}\\S+`, 'g')
 const DISALLOWED_ATTRIBUTES = new Set(['sanitize', 'allowList', 'sanitizeFn'])
 
 const DefaultType = {
@@ -70,7 +68,7 @@ const AttachmentMap = {
 
 const Default = {
   animation: true,
-  template: '<div class="tooltip" role="tooltip">' +
+  template: '<div class="tooltip bs-tooltip" role="tooltip">' +
               '<div class="tooltip-arrow"></div>' +
               '<div class="tooltip-inner"></div>' +
             '</div>',
@@ -318,7 +316,6 @@ class Tooltip extends BaseComponent {
         tip.remove()
       }
 
-      this._cleanTipClass()
       this._element.removeAttribute('aria-describedby')
       EventHandler.trigger(this._element, this.constructor.Event.HIDDEN)
 
@@ -444,7 +441,7 @@ class Tooltip extends BaseComponent {
     context = context || Data.get(event.delegateTarget, dataKey)
 
     if (!context) {
-      context = new this.constructor(event.delegateTarget, this._getDelegateConfig())
+      context = new this.constructor(event.delegateTarget, this.config)
       Data.set(event.delegateTarget, dataKey, context)
     }
 
@@ -492,19 +489,8 @@ class Tooltip extends BaseComponent {
           options: {
             element: `.${this.constructor.NAME}-arrow`
           }
-        },
-        {
-          name: 'onChange',
-          enabled: true,
-          phase: 'afterWrite',
-          fn: data => this._handlePopperPlacementChange(data)
         }
-      ],
-      onFirstUpdate: data => {
-        if (data.options.placement !== data.placement) {
-          this._handlePopperPlacementChange(data)
-        }
-      }
+      ]
     }
 
     return {
@@ -682,42 +668,6 @@ class Tooltip extends BaseComponent {
 
     return config
   }
-
-  _getDelegateConfig() {
-    const config = {}
-
-    if (this._config) {
-      for (const key in this._config) {
-        if (this.constructor.Default[key] !== this._config[key]) {
-          config[key] = this._config[key]
-        }
-      }
-    }
-
-    return config
-  }
-
-  _cleanTipClass() {
-    const tip = this.getTipElement()
-    const tabClass = tip.getAttribute('class').match(BSCLS_PREFIX_REGEX)
-    if (tabClass !== null && tabClass.length > 0) {
-      tabClass.map(token => token.trim())
-        .forEach(tClass => tip.classList.remove(tClass))
-    }
-  }
-
-  _handlePopperPlacementChange(popperData) {
-    const { state } = popperData
-
-    if (!state) {
-      return
-    }
-
-    this.tip = state.elements.popper
-    this._cleanTipClass()
-    this._addAttachmentClass(this._getAttachment(state.placement))
-  }
-
   // Static
 
   static jQueryInterface(config) {

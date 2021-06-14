@@ -122,7 +122,7 @@
   }
 }
 
-.bs-popover-auto {
+.bs-popover {
   &[data-popper-placement^="top"] {
     @extend .bs-popover-top;
   }
