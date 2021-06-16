@@ -35,6 +35,7 @@ const EVENT_SHOW = `show${EVENT_KEY}`
 const EVENT_SHOWN = `shown${EVENT_KEY}`
 
 const CLASS_NAME_FADE = 'fade'
+const CLASS_NAME_HIDE = 'hide' // @deprecated | is here only for backwards compatibility reasons
 const CLASS_NAME_SHOW = 'show'
 const CLASS_NAME_SHOWING = 'showing'
 
@@ -105,6 +106,7 @@ class Toast extends BaseComponent {
       this._maybeScheduleHide()
     }
 
+    this._element.classList.remove(CLASS_NAME_HIDE) // @deprecated
     reflow(this._element)
     this._element.classList.add(CLASS_NAME_SHOW)
     this._element.classList.add(CLASS_NAME_SHOWING)
@@ -124,6 +126,7 @@ class Toast extends BaseComponent {
     }
 
     const complete = () => {
+      this._element.classList.add(CLASS_NAME_HIDE) // @deprecated
       this._element.classList.remove(CLASS_NAME_SHOWING)
       this._element.classList.remove(CLASS_NAME_SHOW)
       EventHandler.trigger(this._element, EVENT_HIDDEN)
