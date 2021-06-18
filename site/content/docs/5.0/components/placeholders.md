@@ -25,7 +25,7 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
     </div>
   </div>
 
-  <div class="card" aria-busy="true" aria-hidden="true" style="width: 18rem;">
+  <div class="card" aria-hidden="true" style="width: 18rem;">
     {{< placeholder width="100%" height="180" class="card-img-top" text="false" >}}
     <div class="card-body">
       <h5 class="card-title placeholder-glow">
@@ -51,17 +51,17 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
 Placeholders are composed of the class `.placeholder` and a grid column class, i.e. `.col-6`, to set the width of the placeholder. You only need to place them wherever you want.
 
 {{< example >}}
-<p aria-busy="true">
+<p aria-hidden="true">
   <span class="placeholder col-6"></span>
 </p>
 
-<a href="#" class="btn btn-primary disabled placeholder col-4" aria-busy="true">
+<a href="#" class="btn btn-primary disabled placeholder col-4" aria-hidden="true">
   &nbsp;<!-- to give the element some height -->
 </a>
 {{< /example >}}
 
 {{< callout info >}}
-Beside of using `aria-busy="true"` to indicate the subtree is being updated, if both, placeholder and the populated element, are present on the content, `aria-hidden="true"` should be used to hide one or another from screen readers.
+The use of `aria-hidden="true"` only indicates that the element should be hidden to screen readers. The *loading* behaviour of the placeholder depends on how authors will actually use the placeholder styles, how they plan to update things, etc. Some Javascript code may be needed to *swap* the state of the placeholder and inform AT users of the update.
 {{< /callout >}}
 
 
