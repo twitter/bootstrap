@@ -14,34 +14,32 @@ Bootstrap "placeholders" can be used to enhance the experience of your applicati
 
 In this example we have built a fancy HTML card using Bootstrap components. Then using placeholders we have created a loading template for it. As you can see, the size and proportions are the same.
 
-{{< example >}}
-<div class="d-flex justify-content-around">
-  <div class="card" style="width: 18rem;">
-    {{< placeholder width="100%" height="180" class="card-img-top" text="false" background="#20c997" >}}
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
+{{< example class="bd-example-placeholder-cards d-flex justify-content-around" >}}
+<div class="card">
+  {{< placeholder width="100%" height="180" class="card-img-top" text="false" background="#20c997" >}}
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
+</div>
 
-  <div class="card" aria-hidden="true" style="width: 18rem;">
-    {{< placeholder width="100%" height="180" class="card-img-top" text="false" >}}
-    <div class="card-body">
-      <h5 class="card-title placeholder-glow">
-        <span class="placeholder col-6"></span>&#8232;
-      </h5>
-      <p class="card-text placeholder-glow">
-        <span class="placeholder col-7"></span>
-        <span class="placeholder col-4"></span>
-        <span class="placeholder col-4"></span>
-        <span class="placeholder col-6"></span>
-        <span class="placeholder col-8"></span>
-      </p>
-      <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6">
-        &nbsp;<!-- needed to give the element some height -->
-      </a>
-    </div>
+<div class="card" aria-hidden="true">
+  {{< placeholder width="100%" height="180" class="card-img-top" text="false" >}}
+  <div class="card-body">
+    <h5 class="card-title placeholder-glow">
+      <span class="placeholder col-6"></span>&#8232;
+    </h5>
+    <p class="card-text placeholder-glow">
+      <span class="placeholder col-7"></span>
+      <span class="placeholder col-4"></span>
+      <span class="placeholder col-4"></span>
+      <span class="placeholder col-6"></span>
+      <span class="placeholder col-8"></span>
+    </p>
+    <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6">
+      &nbsp;<!-- needed to give the element some height -->
+    </a>
   </div>
 </div>
 {{< /example >}}
