@@ -9,8 +9,7 @@ import {
   defineJQueryPlugin,
   getSelectorFromElement,
   getUID,
-  isElement,
-  typeCheckConfig
+  isElement
 } from './util/index'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
@@ -66,9 +65,8 @@ const METHOD_POSITION = 'position'
 
 class ScrollSpy extends BaseComponent {
   constructor(element, config) {
-    super(element)
+    super(element, config)
     this._scrollElement = this._element.tagName === 'BODY' ? window : this._element
-    this._config = this._getConfig(config)
     this._selector = `${this._config.target} ${SELECTOR_NAV_LINKS}, ${this._config.target} ${SELECTOR_LIST_ITEMS}, ${this._config.target} .${CLASS_NAME_DROPDOWN_ITEM}`
     this._offsets = []
     this._targets = []
@@ -143,13 +141,11 @@ class ScrollSpy extends BaseComponent {
 
   // Private
 
-  _getConfig(config) {
-    config = {
-      ...Default,
-      ...Manipulator.getDataAttributes(this._element),
-      ...(typeof config === 'object' && config ? config : {})
-    }
+  _getConfigDefaultType() {
+    return DefaultType
+  }
 
+  _configAfterMerge(config) {
     if (typeof config.target !== 'string' && isElement(config.target)) {
       let { id } = config.target
       if (!id) {
@@ -159,8 +155,6 @@ class ScrollSpy extends BaseComponent {
 
       config.target = `#${id}`
     }
-
-    typeCheckConfig(NAME, config, DefaultType)
 
     return config
   }

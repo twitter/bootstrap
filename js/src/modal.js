@@ -10,11 +10,9 @@ import {
   getElementFromSelector,
   isRTL,
   isVisible,
-  reflow,
-  typeCheckConfig
+  reflow
 } from './util/index'
 import EventHandler from './dom/event-handler'
-import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
 import ScrollBarHelper from './util/scrollbar'
 import BaseComponent from './base-component'
@@ -75,9 +73,8 @@ const SELECTOR_DATA_DISMISS = '[data-bs-dismiss="modal"]'
 
 class Modal extends BaseComponent {
   constructor(element, config) {
-    super(element)
+    super(element, config)
 
-    this._config = this._getConfig(config)
     this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element)
     this._backdrop = this._initializeBackDrop()
     this._isShown = false
@@ -206,14 +203,8 @@ class Modal extends BaseComponent {
     })
   }
 
-  _getConfig(config) {
-    config = {
-      ...Default,
-      ...Manipulator.getDataAttributes(this._element),
-      ...(typeof config === 'object' ? config : {})
-    }
-    typeCheckConfig(NAME, config, DefaultType)
-    return config
+  _getConfigDefaultType() {
+    return DefaultType
   }
 
   _showElement(relatedTarget) {
