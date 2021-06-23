@@ -1,18 +1,18 @@
 ---
 layout: docs
 title: Placeholders
-description: Create loading placeholders for your components or pages with Bootstrap placeholders, built entirely with HTML, CSS, and no JavaScript.
+description: Use loading placeholders for your components or pages to indicate something may still be loading.
 group: components
 toc: true
 ---
 
 ## About
 
-Bootstrap "placeholders" can be used to enhance the experience of your application. They're built only with HTML and CSS, meaning you don't need any JavaScript to create them. You will, however, need some custom JavaScript to toggle their visibility. Their appearance, color, and sizing can be easily customized with our amazing utility classes.
+Placeholders can be used to enhance the experience of your application. They're built only with HTML and CSS, meaning you don't need any JavaScript to create them. You will, however, need some custom JavaScript to toggle their visibility. Their appearance, color, and sizing can be easily customized with our utility classes.
 
 ## Example
 
-In this example we have built a fancy HTML card using Bootstrap components. Then using placeholders we have created a loading template for it. As you can see, the size and proportions are the same.
+In the example below, we take a typical card component and recreate it with placeholders applied to create a "loading card". Size and proportions are the same between the two.
 
 {{< example class="bd-example-placeholder-cards d-flex justify-content-around" >}}
 <div class="card">
@@ -46,7 +46,7 @@ In this example we have built a fancy HTML card using Bootstrap components. Then
 
 ## How it works
 
-Placeholders are composed of the class `.placeholder` and a grid column class, i.e. `.col-6`, to set the width of the placeholder. You only need to place them wherever you want.
+Create placeholders with the `.placeholder` class and a grid column class (e.g., `.col-6`) to set the `width`. Place them nearly wherever you like, including in place of text or as a modifier to some components (sometimes requiring a `&nbsp;`).
 
 {{< example >}}
 <p aria-hidden="true">
@@ -59,13 +59,12 @@ Placeholders are composed of the class `.placeholder` and a grid column class, i
 {{< /example >}}
 
 {{< callout info >}}
-The use of `aria-hidden="true"` only indicates that the element should be hidden to screen readers. The *loading* behaviour of the placeholder depends on how authors will actually use the placeholder styles, how they plan to update things, etc. Some Javascript code may be needed to *swap* the state of the placeholder and inform AT users of the update.
+The use of `aria-hidden="true"` only indicates that the element should be hidden to screen readers. The *loading* behaviour of the placeholder depends on how authors will actually use the placeholder styles, how they plan to update things, etc. Some JavasSript code may be needed to *swap* the state of the placeholder and inform AT users of the update.
 {{< /callout >}}
-
 
 ### Width
 
-You can customize them width with css widths or even using the utility classes.
+You can change the `width` through grid column classes, width utilities, or inline styles.
 
 {{< example >}}
 <span class="placeholder col-6"></span>
@@ -75,7 +74,7 @@ You can customize them width with css widths or even using the utility classes.
 
 ### Color
 
-By default the `placeholder` use the `currentColor`. Again, you can override it with a custom color or utitlity class.
+By default, the `placeholder` uses `currentColor`. This can be overriden with a custom color or utility class.
 
 {{< example >}}
 <span class="placeholder col-12"></span>
@@ -88,7 +87,7 @@ By default the `placeholder` use the `currentColor`. Again, you can override it 
 
 ### Sizing
 
-The size of the `.placeholder`s are calculated according to the typography style of the parent element. To customize them you can use classes like `.placeholder-lg`, `.placeholder-sm` or `.placeholder-xs`.
+The size of `.placeholder`s are based on the typographic style of the parent element. Customize them with sizing modifiers: `.placeholder-lg`, `.placeholder-sm`, or `.placeholder-xs`.
 
 {{< example >}}
 <span class="placeholder col-12 placeholder-lg"></span>
@@ -99,7 +98,7 @@ The size of the `.placeholder`s are calculated according to the typography style
 
 ### Animation
 
-You can use the class `.placeholder-glow` or `.placeholder-wave` to animate the lines and improve the loading perception.
+Animate placehodlers with `.placeholder-glow` or `.placeholder-wave` to better convey the perception of something being _actively_ loaded.
 
 {{< example >}}
 <p class="placeholder-glow">
@@ -116,4 +115,3 @@ You can use the class `.placeholder-glow` or `.placeholder-wave` to animate the 
 ### Variables
 
 {{< scss-docs name="placeholders" file="scss/_variables.scss" >}}
-
