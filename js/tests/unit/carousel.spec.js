@@ -303,23 +303,26 @@ describe('Carousel', () => {
       })
 
       expect(carousel._addTouchEventListeners).not.toHaveBeenCalled()
+      expect(carousel._swipeHelper).toBeNull()
     })
 
     it('should not add touch event listeners if touch supported = false', () => {
       fixtureEl.innerHTML = '<div></div>'
 
       const carouselEl = fixtureEl.querySelector('div')
+      delete document.documentElement.ontouchstart
+      Object.defineProperty(window.navigator, 'maxTouchPoints', () => 0)
 
       const carousel = new Carousel(carouselEl)
 
       EventHandler.off(carouselEl, '.bs-carousel')
-      carousel._touchSupported = false
 
       spyOn(carousel, '_addTouchEventListeners')
 
       carousel._addEventListeners()
 
       expect(carousel._addTouchEventListeners).not.toHaveBeenCalled()
+      expect(carousel._swipeHelper).toBeNull()
     })
 
     it('should add touch event listeners by default', () => {
@@ -470,7 +473,8 @@ describe('Carousel', () => {
     it('should allow swipeleft and call _slide (next) with touch events', done => {
       Simulator.setType('touch')
       clearPointerEvents()
-      document.documentElement.ontouchstart = () => {}
+      document.documentElement.ontouchstart = () => {
+      }
 
       fixtureEl.innerHTML = [
         '<div class="carousel" data-bs-interval="false">',
@@ -510,7 +514,8 @@ describe('Carousel', () => {
     it('should not slide when swiping and carousel is sliding', done => {
       Simulator.setType('touch')
       clearPointerEvents()
-      document.documentElement.ontouchstart = () => {}
+      document.documentElement.ontouchstart = () => {
+      }
 
       fixtureEl.innerHTML = [
         '<div class="carousel" data-bs-interval="false">',
@@ -568,7 +573,7 @@ describe('Carousel', () => {
       }, () => {
         restorePointerEvents()
         delete document.documentElement.ontouchstart
-        expect(carousel.touchDeltaX).toEqual(0)
+        expect(carousel._swipeHelper.xDown).toEqual(0)
         done()
       })
     })
@@ -978,7 +983,8 @@ describe('Carousel', () => {
       const carouselEl = fixtureEl.querySelector('#myCarousel')
       const carousel = new Carousel(carouselEl)
 
-      carousel._interval = setInterval(() => {}, 10)
+      carousel._interval = setInterval(() => {
+      }, 10)
 
       spyOn(window, 'setInterval').and.callThrough()
       spyOn(window, 'clearInterval').and.callThrough()
@@ -1251,7 +1257,7 @@ describe('Carousel', () => {
         ['keydown', jasmine.any(Function), jasmine.any(Boolean)],
         ['mouseover', jasmine.any(Function), jasmine.any(Boolean)],
         ['mouseout', jasmine.any(Function), jasmine.any(Boolean)],
-        ...(carousel._pointerEvent ?
+        ...(carousel._swipeHelper._supportPointerEvents ?
           [
             ['pointerdown', jasmine.any(Function), jasmine.any(Boolean)],
             ['pointerup', jasmine.any(Function), jasmine.any(Boolean)]
