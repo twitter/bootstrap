@@ -473,8 +473,7 @@ describe('Carousel', () => {
     it('should allow swipeleft and call _slide (next) with touch events', done => {
       Simulator.setType('touch')
       clearPointerEvents()
-      document.documentElement.ontouchstart = () => {
-      }
+      document.documentElement.ontouchstart = () => {}
 
       fixtureEl.innerHTML = [
         '<div class="carousel" data-bs-interval="false">',
@@ -514,8 +513,7 @@ describe('Carousel', () => {
     it('should not slide when swiping and carousel is sliding', done => {
       Simulator.setType('touch')
       clearPointerEvents()
-      document.documentElement.ontouchstart = () => {
-      }
+      document.documentElement.ontouchstart = () => {}
 
       fixtureEl.innerHTML = [
         '<div class="carousel" data-bs-interval="false">',
@@ -983,8 +981,7 @@ describe('Carousel', () => {
       const carouselEl = fixtureEl.querySelector('#myCarousel')
       const carousel = new Carousel(carouselEl)
 
-      carousel._interval = setInterval(() => {
-      }, 10)
+      carousel._interval = setInterval(() => {}, 10)
 
       spyOn(window, 'setInterval').and.callThrough()
       spyOn(window, 'clearInterval').and.callThrough()
