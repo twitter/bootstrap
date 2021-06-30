@@ -315,7 +315,7 @@ describe('Carousel', () => {
 
       const carousel = new Carousel(carouselEl)
 
-      EventHandler.off(carouselEl, '.bs-carousel')
+      EventHandler.off(carouselEl, Carousel.EVENT_KEY)
 
       spyOn(carousel, '_addTouchEventListeners')
 
@@ -571,7 +571,7 @@ describe('Carousel', () => {
       }, () => {
         restorePointerEvents()
         delete document.documentElement.ontouchstart
-        expect(carousel._swipeHelper.xDown).toEqual(0)
+        expect(carousel._swipeHelper._xDown).toEqual(0)
         done()
       })
     })
@@ -1242,13 +1242,14 @@ describe('Carousel', () => {
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')
       const addEventSpy = spyOn(carouselEl, 'addEventListener').and.callThrough()
-      const removeEventSpy = spyOn(carouselEl, 'removeEventListener').and.callThrough()
+      const removeEventSpy = spyOn(EventHandler, 'off').and.callThrough()
 
       // Headless browser does not support touch events, so need to fake it
       // to test that touch events are add/removed properly.
       document.documentElement.ontouchstart = () => {}
 
       const carousel = new Carousel(carouselEl)
+      const swipeHelperSpy= spyOn(carousel._swipeHelper, 'dispose').and.callThrough()
 
       const expectedArgs = [
         ['keydown', jasmine.any(Function), jasmine.any(Boolean)],
@@ -1270,7 +1271,8 @@ describe('Carousel', () => {
 
       carousel.dispose()
 
-      expect(removeEventSpy.calls.allArgs()).toEqual(expectedArgs)
+      expect(removeEventSpy).toHaveBeenCalledWith(carouselEl, Carousel.EVENT_KEY)
+      expect(swipeHelperSpy).toHaveBeenCalled()
 
       delete document.documentElement.ontouchstart
     })

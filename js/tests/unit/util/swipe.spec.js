@@ -15,14 +15,13 @@ describe('Swipe', () => {
   // Headless browser does not support touch events, so need to fake it
   // to test that touch events are add properly.
   const defineDocumentElementOntouchstart = () => {
-    document.documentElement.ontouchstart = () => {}
+    document.documentElement.ontouchstart = () => {
+    }
   }
 
   const deleteDocumentElementOntouchstart = () => {
     delete document.documentElement.ontouchstart
   }
-
-  const mockMaxTouchPointsGetter = val => Object.defineProperty(navigator, 'maxTouchPoints', { value: val, configurable: true })
 
   const mockSwipeGesture = (element, options = {}, type = 'touch') => {
     Simulator.setType(type)
@@ -31,16 +30,16 @@ describe('Swipe', () => {
     Simulator.gestures.swipe(element, _options)
   }
 
-  beforeAll(() => {
+  beforeEach(() => {
     fixtureEl = getFixture()
     const cssStyle = [
       '<style>',
       '   #fixture .pointer-event {',
-      '     touch-action: none;',
+      '     touch-action: pan-y;',
       '  }',
       '   #fixture div {',
-      '     width: 500px;',
-      '     height: 500px;',
+      '     width: 300px;',
+      '     height: 300px;',
       '  }',
       '</style>'
     ].join('')
@@ -51,6 +50,7 @@ describe('Swipe', () => {
 
   afterEach(() => {
     clearFixture()
+    deleteDocumentElementOntouchstart()
   })
 
   describe('constructor', () => {
@@ -64,7 +64,7 @@ describe('Swipe', () => {
 
     it('should not add touch event listeners if touch is not supported', () => {
       deleteDocumentElementOntouchstart()
-      mockMaxTouchPointsGetter(0)
+      Object.defineProperty(window.navigator, 'maxTouchPoints', () => 0)
 
       spyOn(Swipe.prototype, '_initEvents').and.callThrough()
       const swipe = new Swipe(swipeEl)
@@ -123,6 +123,7 @@ describe('Swipe', () => {
           return
         }
 
+        expect().nothing()
         done()
       }
 
@@ -152,7 +153,12 @@ describe('Swipe', () => {
 
       defineDocumentElementOntouchstart()
       // eslint-disable-next-line no-new
-      new Swipe(swipeEl, { rightCallback: done })
+      new Swipe(swipeEl, {
+        rightCallback: () => {
+          expect().nothing()
+          done()
+        }
+      })
 
       mockSwipeGesture(swipeEl, { deltaX: 300 }, 'pointer')
     })
@@ -166,7 +172,12 @@ describe('Swipe', () => {
 
       defineDocumentElementOntouchstart()
       // eslint-disable-next-line no-new
-      new Swipe(swipeEl, { leftCallback: done })
+      new Swipe(swipeEl, {
+        leftCallback: () => {
+          expect().nothing()
+          done()
+        }
+      })
 
       mockSwipeGesture(swipeEl, {
         pos: [300, 10],
@@ -184,22 +195,46 @@ describe('Swipe', () => {
       swipe.dispose()
       expect(EventHandler.off).toHaveBeenCalledWith(swipeEl, '.bs.swipe')
     })
+
+    it('should destroy', () => {
+      const addEventSpy = spyOn(fixtureEl, 'addEventListener').and.callThrough()
+      const removeEventSpy = spyOn(fixtureEl, 'removeEventListener').and.callThrough()
+      defineDocumentElementOntouchstart()
+
+      const swipe = new Swipe(fixtureEl)
+
+      const expectedArgs =
+        swipe._supportPointerEvents ?
+          [
+            ['pointerdown', jasmine.any(Function), jasmine.any(Boolean)],
+            ['pointerup', jasmine.any(Function), jasmine.any(Boolean)]
+          ] :
+          [
+            ['touchstart', jasmine.any(Function), jasmine.any(Boolean)],
+            ['touchmove', jasmine.any(Function), jasmine.any(Boolean)],
+            ['touchend', jasmine.any(Function), jasmine.any(Boolean)]
+          ]
+
+      expect(addEventSpy.calls.allArgs()).toEqual(expectedArgs)
+
+      swipe.dispose()
+
+      expect(removeEventSpy.calls.allArgs()).toEqual(expectedArgs)
+
+      delete document.documentElement.ontouchstart
+    })
   })
 
   describe('"isSupported" static', () => {
-    it('should return "true" if "touchstart" exists in document element or "navigator.maxTouchPoints" are more than zero (0)', () => {
-      mockMaxTouchPointsGetter(0)
+    it('should return "true" if "touchstart" exists in document element)', () => {
+      Object.defineProperty(window.navigator, 'maxTouchPoints', () => 0)
       defineDocumentElementOntouchstart()
 
-      expect(Swipe.isSupported()).toBeTrue()
-
-      deleteDocumentElementOntouchstart()
-      mockMaxTouchPointsGetter(1)
       expect(Swipe.isSupported()).toBeTrue()
     })
 
     it('should return "false" if "touchstart" not exists in document element and "navigator.maxTouchPoints" are  zero (0)', () => {
-      mockMaxTouchPointsGetter(0)
+      Object.defineProperty(window.navigator, 'maxTouchPoints', () => 0)
       deleteDocumentElementOntouchstart()
 
       expect(Swipe.isSupported()).toBeFalse()

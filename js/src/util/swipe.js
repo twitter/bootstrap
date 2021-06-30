@@ -1,7 +1,7 @@
 import EventHandler from '../dom/event-handler'
 import { execute, typeCheckConfig } from './index'
 
-const EVENT_KEY = '.bs.carousel'
+const EVENT_KEY = '.bs.swipe'
 const EVENT_TOUCHSTART = `touchstart${EVENT_KEY}`
 const EVENT_TOUCHMOVE = `touchmove${EVENT_KEY}`
 const EVENT_TOUCHEND = `touchend${EVENT_KEY}`
@@ -27,59 +27,59 @@ const NAME = 'swipe'
 
 class Swipe {
   constructor(element, config) {
-    this.element = element
+    this._element = element
 
-    if (!element) {
+    if (!element || !Swipe.isSupported()) {
       return
     }
 
     this._config = this._getConfig(config)
-    this.xDown = 0
+    this._xDown = 0
     this._supportPointerEvents = Boolean(window.PointerEvent)
     this._initEvents()
   }
 
   dispose() {
-    EventHandler.off(this.element, EVENT_KEY)
+    EventHandler.off(this._element, EVENT_KEY)
   }
 
   _start(event) {
     if (!this._supportPointerEvents) {
-      this.xDown = event.touches[0].clientX
+      this._xDown = event.touches[0].clientX
 
       return
     }
 
     if (this._eventIsNotSwipe(event)) {
-      this.xDown = event.clientX
+      this._xDown = event.clientX
     }
   }
 
   _end(event) {
     if (this._eventIsNotSwipe(event)) {
-      this.xDown = event.clientX - this.xDown
+      this._xDown = event.clientX - this._xDown
     }
 
-    this._handleSwipe(event)
+    this._handleSwipe()
     execute(this._config.endCallback)
   }
 
   _move(event) {
-    this.xDown = event.touches && event.touches.length > 1 ?
+    this._xDown = event.touches && event.touches.length > 1 ?
       0 :
-      event.touches[0].clientX - this.xDown
+      event.touches[0].clientX - this._xDown
   }
 
   _handleSwipe() {
-    const absDeltaX = Math.abs(this.xDown)
+    const absDeltaX = Math.abs(this._xDown)
 
     if (absDeltaX <= SWIPE_THRESHOLD) {
       return
     }
 
-    const direction = absDeltaX / this.xDown
+    const direction = absDeltaX / this._xDown
 
-    this.xDown = 0
+    this._xDown = 0
 
     if (!direction) {
       return
@@ -90,14 +90,14 @@ class Swipe {
 
   _initEvents() {
     if (this._supportPointerEvents) {
-      EventHandler.on(this.element, EVENT_POINTERDOWN, event => this._start(event))
-      EventHandler.on(this.element, EVENT_POINTERUP, event => this._end(event))
+      EventHandler.on(this._element, EVENT_POINTERDOWN, event => this._start(event))
+      EventHandler.on(this._element, EVENT_POINTERUP, event => this._end(event))
 
-      this.element.classList.add(CLASS_NAME_POINTER_EVENT)
+      this._element.classList.add(CLASS_NAME_POINTER_EVENT)
     } else {
-      EventHandler.on(this.element, EVENT_TOUCHSTART, event => this._start(event))
-      EventHandler.on(this.element, EVENT_TOUCHMOVE, event => this._move(event))
-      EventHandler.on(this.element, EVENT_TOUCHEND, event => this._end(event))
+      EventHandler.on(this._element, EVENT_TOUCHSTART, event => this._start(event))
+      EventHandler.on(this._element, EVENT_TOUCHMOVE, event => this._move(event))
+      EventHandler.on(this._element, EVENT_TOUCHEND, event => this._end(event))
     }
   }
 
