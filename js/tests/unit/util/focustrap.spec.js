@@ -44,7 +44,7 @@ describe('FocusTrap', () => {
       fixtureEl.innerHTML = [
         '<a href="#" id="outside">outside</a>',
         '<div id="focustrap" tabindex="-1">',
-        '<a href="#" id="inside">inside</a>',
+        '   <a href="#" id="inside">inside</a>',
         '</div>'
       ].join('')
 
@@ -76,9 +76,9 @@ describe('FocusTrap', () => {
       fixtureEl.innerHTML = [
         '<a href="#" id="outside">outside</a>',
         '<div id="focustrap" tabindex="-1">',
-        '<a href="#" id="first">first</a>',
-        '<a href="#" id="inside">inside</a>',
-        '<a href="#" id="last">last</a>',
+        '   <a href="#" id="first">first</a>',
+        '   <a href="#" id="inside">inside</a>',
+        '   <a href="#" id="last">last</a>',
         '</div>'
       ].join('')
 
@@ -102,9 +102,9 @@ describe('FocusTrap', () => {
       fixtureEl.innerHTML = [
         '<a href="#" id="outside">outside</a>',
         '<div id="focustrap" tabindex="-1">',
-        '<a href="#" id="first">first</a>',
-        '<a href="#" id="inside">inside</a>',
-        '<a href="#" id="last">last</a>',
+        '   <a href="#" id="first">first</a>',
+        '   <a href="#" id="inside">inside</a>',
+        '   <a href="#" id="last">last</a>',
         '</div>'
       ].join('')
 
@@ -128,8 +128,7 @@ describe('FocusTrap', () => {
     it('should force focus on itself if there is no focusable content', done => {
       fixtureEl.innerHTML = [
         '<a href="#" id="outside">outside</a>',
-        '<div id="focustrap" tabindex="-1">',
-        '</div>'
+        '<div id="focustrap" tabindex="-1"></div>'
       ].join('')
 
       const trapElement = fixtureEl.querySelector('div')
@@ -159,8 +158,9 @@ describe('FocusTrap', () => {
     it('should flag itself as no longer active', () => {
       const focustrap = new FocusTrap({ trapElement: fixtureEl })
       focustrap.activate()
-      focustrap.deactivate()
+      expect(focustrap._isActive).toBe(true)
 
+      focustrap.deactivate()
       expect(focustrap._isActive).toBe(false)
     })
 
@@ -174,7 +174,7 @@ describe('FocusTrap', () => {
       expect(EventHandler.off).toHaveBeenCalled()
     })
 
-    it('doesn\'t try removing event listeners unless it needs to', () => {
+    it('doesn\'t try removing event listeners unless it needs to (in case it hasn\'t been activated)', () => {
       const focustrap = new FocusTrap({ trapElement: fixtureEl })
 
       spyOn(EventHandler, 'off')
