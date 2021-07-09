@@ -484,6 +484,10 @@ class Modal {
 
       // Adjust fixed content padding
       $(fixedContent).each((index, element) => {
+        if (this._isShorterThanWindow(element)) {
+          return
+        }
+
         const actualPadding = element.style.paddingRight
         const calculatedPadding = $(element).css('padding-right')
         $(element)
@@ -493,6 +497,10 @@ class Modal {
 
       // Adjust sticky content margin
       $(stickyContent).each((index, element) => {
+        if (this._isShorterThanWindow(element)) {
+          return
+        }
+
         const actualMargin = element.style.marginRight
         const calculatedMargin = $(element).css('margin-right')
         $(element)
@@ -542,6 +550,10 @@ class Modal {
     const scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth
     document.body.removeChild(scrollDiv)
     return scrollbarWidth
+  }
+
+  _isShorterThanWindow(element) {
+    return window.innerWidth > element.clientWidth + this._scrollbarWidth
   }
 
   // Static
