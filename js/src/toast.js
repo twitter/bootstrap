@@ -35,7 +35,7 @@ const EVENT_SHOW = `show${EVENT_KEY}`
 const EVENT_SHOWN = `shown${EVENT_KEY}`
 
 const CLASS_NAME_FADE = 'fade'
-const CLASS_NAME_HIDE = 'hide' // @deprecated | is here only for backwards compatibility reasons
+const CLASS_NAME_HIDE = 'hide' // @deprecated - kept here only for backwards compatibility
 const CLASS_NAME_SHOW = 'show'
 const CLASS_NAME_SHOWING = 'showing'
 
