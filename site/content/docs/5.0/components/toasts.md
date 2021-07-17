@@ -42,7 +42,7 @@ Toasts are as flexible as you need and have very little required markup. At a mi
 {{< /example >}}
 
 {{< callout warning >}}
- Previously, our scripts dynamically added the `.hide` class to completely hide a toast (with `display:none`, rather than just with `opacity:0`). This is now not necessary anymore. However, for backwards compatibility, our script will continue to toggle the class (even though there is no practical need for it) until the next major version.
+Previously, our scripts dynamically added the `.hide` class to completely hide a toast (with `display:none`, rather than just with `opacity:0`). This is now not necessary anymore. However, for backwards compatibility, our script will continue to toggle the class (even though there is no practical need for it) until the next major version.
 {{< /callout >}}
 
 ### Live example
