@@ -7,6 +7,7 @@
 
 import {
   defineJQueryPlugin,
+  getElement,
   getElementFromSelector,
   isRTL,
   isVisible,
@@ -35,13 +36,15 @@ const ESCAPE_KEY = 'Escape'
 const Default = {
   backdrop: true,
   keyboard: true,
-  focus: true
+  focus: true,
+  rootElement: 'body'
 }
 
 const DefaultType = {
   backdrop: '(boolean|string)',
   keyboard: 'boolean',
-  focus: 'boolean'
+  focus: 'boolean',
+  rootElement: 'element'
 }
 
 const EVENT_HIDE = `hide${EVENT_KEY}`
@@ -84,7 +87,7 @@ class Modal extends BaseComponent {
     this._isShown = false
     this._ignoreBackdropClick = false
     this._isTransitioning = false
-    this._scrollBar = new ScrollBarHelper()
+    this._scrollBar = new ScrollBarHelper(this._config.rootElement)
   }
 
   // Getters
@@ -124,7 +127,7 @@ class Modal extends BaseComponent {
 
     this._scrollBar.hide()
 
-    document.body.classList.add(CLASS_NAME_OPEN)
+    this._config.rootElement.classList.add(CLASS_NAME_OPEN)
 
     this._adjustDialog()
 
@@ -201,7 +204,8 @@ class Modal extends BaseComponent {
   _initializeBackDrop() {
     return new Backdrop({
       isVisible: Boolean(this._config.backdrop), // 'static' option will be translated to true, and booleans will keep their value
-      isAnimated: this._isAnimated()
+      isAnimated: this._isAnimated(),
+      rootElement: this._config.rootElement
     })
   }
 
@@ -211,6 +215,8 @@ class Modal extends BaseComponent {
       ...Manipulator.getDataAttributes(this._element),
       ...(typeof config === 'object' ? config : {})
     }
+
+    config.rootElement = getElement(config.rootElement)
     typeCheckConfig(NAME, config, DefaultType)
     return config
   }
@@ -221,7 +227,7 @@ class Modal extends BaseComponent {
 
     if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
       // Don't move modal's DOM position
-      document.body.appendChild(this._element)
+      this._config.rootElement.appendChild(this._element)
     }
 
     this._element.style.display = 'block'
@@ -299,7 +305,7 @@ class Modal extends BaseComponent {
     this._element.removeAttribute('role')
     this._isTransitioning = false
     this._backdrop.hide(() => {
-      document.body.classList.remove(CLASS_NAME_OPEN)
+      this._config.rootElement.classList.remove(CLASS_NAME_OPEN)
       this._resetAdjustments()
       this._scrollBar.reset()
       EventHandler.trigger(this._element, EVENT_HIDDEN)
